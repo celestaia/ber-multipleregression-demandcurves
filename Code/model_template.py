@@ -7,7 +7,8 @@ def load_data(csv_path):
     """
     Load the CSV file that contains the survey data with average demand columns.
     """
-    return pd.read_csv(csv_path)
+    data = data.columns.str.strip()
+    return data
 
 def extract_avg_demand(data, conditions, group_by_column=None, group_value=None, price_column_prefix='avg_demand_'):
     """
@@ -107,6 +108,6 @@ price_points = {
 run_demand_curve_analysis(
     'Survey Data/v2survey_11-06-24.csv', # this is the path for the CSV here, change if needed
     price_points, 
-    group_by_column = 'Days on Campus',  # Change this to the column you want to filter by
-    group_value = '5'  # The specific value in the column to filter by
+    group_by_column = 'Year',  # Change this to the column you want to filter by
+    group_value = 'Senior (4th Year)'  # The specific value in the column to filter by
 )

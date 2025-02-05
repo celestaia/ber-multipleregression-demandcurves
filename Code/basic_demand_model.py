@@ -4,9 +4,9 @@ import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 
 # Load updated data with average demand columns
-data = pd.read_csv('Survey Data/v2survey_11-06-24.csv')
+data = pd.read_csv('Survey Data/final_bersurvey.csv')
 
-# Define price points and corresponding average demand column names
+# Define price points/column names
 price_points = {
     'free': 0,
     'half': 1.13,
@@ -15,7 +15,7 @@ price_points = {
     'double': 5.50
 }
 
-# Get average demands and corresponding prices from the updated CSV
+# Get average demands and prices from CSV
 prices = []
 avg_demand = []
 for price, value in price_points.items():

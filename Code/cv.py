@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 
 # Load data and clean column names
-data = pd.read_csv('Survey Data/v2survey_11-06-24.csv')
+data = pd.read_csv('Survey Data/v2survey_11-22-24.csv')
 data.columns = data.columns.str.strip()
 
 # Define price points and corresponding average demand column names
@@ -26,7 +26,7 @@ for price, value in price_points.items():
             prices.append(value)
             avg_demand.append(avg_value)
 
-# Create DataFrame and remove N/A values
+# Create DF and remove N/A values
 df = pd.DataFrame({'avg_demand': avg_demand, 'prices': prices}).dropna()
 
 # Set up linear regression model
@@ -38,7 +38,7 @@ model.fit(x, y)
 # Calculate the x-intercept (quantity where price is $0)
 a = model.intercept_[0]  # Intercept (WTP at D=0)
 b = model.coef_[0][0]    # Slope
-max_quantity = -a / b    # Quantity at zero price
+max_quantity = -a / b    # Quantity at $0
 
 # Calculate consumer surplus at $2.25
 initial_price = 2.25
@@ -52,7 +52,7 @@ free_price_cs = 0.5 * max_quantity * a
 compensating_variation = free_price_cs - initial_cs
 
 # Demand Curve Visualization with Compensating Variation annotation
-extended_demand = np.linspace(0, max(x), 100).reshape(-1,1)
+extended_demand = np.linspace(0, max_quantity, 100).reshape(-1,1)
 predicted_prices = model.predict(extended_demand)
 
 plt.figure(figsize=(8, 6))

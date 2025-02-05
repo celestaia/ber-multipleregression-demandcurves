@@ -6,7 +6,7 @@ import matplotlib.colors as mcolors
 from sklearn.linear_model import LinearRegression
 
 # Load updated data with average demand columns
-data = pd.read_csv('Survey Data/v2survey_11-06-24.csv')
+data = pd.read_csv('Survey Data/final_bersurvey.csv')
 
 # Define price points and corresponding average demand column names
 price_points = {
@@ -64,7 +64,12 @@ def priceDemandByFilter(trueData, filter_col):
     plt.ylim(bottom=-0.5)
     plt.legend()
     plt.grid(True)
-    plt.show()
+    
+    filter_name = filter_col.lower().replace(" ", "_")
+    if (filter_name[-1] == "_"):
+        filter_name = filter_name[:-1]
+    plt.savefig(f'Figures/multiple_lr/by_{filter_name}.png')
+    plt.close()
     
 priceDemandByFilter(data, 'Year')
 priceDemandByFilter(data, 'Transfer')
