@@ -33,7 +33,8 @@ def priceDemandByFilter(trueData, filter_col):
     
     # for clipper card values only, get rid of outlier terms
     if filter_col == 'Clipper Card Value ':
-        filter_col_values = filter_col_values[:-2]
+        filter_col_values = filter_col_values[:-3]
+        print(len(trueData[trueData[filter_col] == filter_col_values[-2]]))
         
     for val in filter_col_values:
         print(val)
