@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
+import re
 
 from sklearn.linear_model import LinearRegression
 
@@ -17,15 +18,28 @@ price_points = {
     'double': 5.50
 }
 
+def extract_number(s):
+  """Extracts the numerical part of a string."""
+  match = re.search(r'\d+', str(s))  # Find the first occurrence of digits
+  if match:
+    return int(match.group(0))  # Convert the matched digits to an integer
+  else:
+    return s  # Handle strings without numbers (or assign a default value)
+
 # Get average demands and corresponding prices from the updated CSV based on filter arguments
 def priceDemandByFilter(trueData, filter_col):
     filter_col_values = list(trueData[filter_col].unique())
+    filter_col_values.sort(key=extract_number)
+    
+    # for clipper card values only, get rid of outlier terms
+    if filter_col == 'Clipper Card Value ':
+        filter_col_values = filter_col_values[:-2]
+        
     for val in filter_col_values:
         print(val)
     
     plt.figure(figsize=(8,6))
-    color_list = list(mcolors.TABLEAU_COLORS.values())
-    colors = iter(color_list)
+    colors = iter(plt.cm.rainbow(np.linspace(0, 1, len(filter_col_values))))
     
     for filter_col_value in filter_col_values:
         data = trueData[trueData[filter_col] == filter_col_value]
@@ -66,9 +80,16 @@ def priceDemandByFilter(trueData, filter_col):
     plt.grid(True)
     
     filter_name = filter_col.lower().replace(" ", "_")
+    
+    # for clipper card filter_col name
+    filter_name = filter_name.replace(" ", "")
+    
     if (filter_name[-1] == "_"):
         filter_name = filter_name[:-1]
-    plt.savefig(f'Figures/multiple_lr/by_{filter_name}.png')
+        
+    # should show fig and manually save for a few cases where it's hard to see the lines (housing, clipper card value)
+    plt.show()
+    # plt.savefig(f'Figures/multiple_lr/by_{filter_name}.png')
     plt.close()
     
 priceDemandByFilter(data, 'Year')
